@@ -1,0 +1,211 @@
+@import 'compass'
+@import 'config'
+@import 'remfont'
+
+// Global
+
+html, body
+  height: 100%
+
+body
+  background: #{"{{ theme.background_color }}"}
+  color: #{"{{ theme.text_color }}"}
+  font: normal 100%/1.5 #{"{{ theme.text_font | font_family }}"}
+  -webkit-font-smoothing: antialiased
+
+hr
+  background-color: 1px solid #{"{{ theme.border_color }}"}
+  border-style: none
+  border: none
+  box-sizing: border-box
+  height: 1px
+  margin: 16px 0
+  padding: 0
+  width: 100%
+
+// CSS3 Global Animation
+
+header:after
+  +transition-property(all)
+  +transition-duration(.5s)
+  +transition-timing-function(ease-in)
+
+a,
+header a:after,
+.slideshow div a,
+.button, submit, input[type='submit'], button, select, path, circle, .select
+  +transition-property(all)
+  +transition-duration(.25s)
+  +transition-timing-function(ease-in-out)
+
+// Links
+
+a
+  color: #{"{{ theme.link_color }}"}
+  text-decoration: none
+
+a:hover
+  color: #{"{{ theme.link_hover }}"}
+
+
+// Buttons
+
+.button, submit, input[type='submit'], button
+  +border-radius(0)
+  +font-size(14)
+  background-color: transparent
+  border: 1px solid #{"{{ theme.link_color }}"}
+  box-sizing: border-box
+  color: #{"{{ theme.link_color }}"}
+  display: inline-block
+  font-weight: 600
+  height: 56px
+  line-height: 56px
+  margin: 0
+  outline: 0
+  padding: 0 $marginSize/2
+  white-space: nowrap
+  width: 100%
+
+  &:hover, &:focus
+    background-color: #{"{{ theme.link_hover }}"}
+    border: 1px solid #{"{{ theme.link_hover }}"}
+    color: #{"{{ theme.background_color }}"}
+
+// Typography
+
+form, input, textarea, submit, input[type='submit'], input[type='text'], button, select
+  font-family: #{"{{ theme.text_font | font_family }}"}
+  +font-size(14)
+  font-style: normal
+  -webkit-font-smoothing: antialiased
+  -webkit-appearance: none
+  -moz-appearance:    none
+  appearance:         none
+
+input[type='text'], input[type='textarea'], textarea
+  +border-radius(0)
+  +font-size(16)
+  background-color: rgba(white, 0)
+  border: 1px solid #{"{{ theme.link_color }}"}
+  box-sizing: border-box
+  color: #{"{{ theme.link_color }}"}
+  margin: 0
+  outline: 0
+  white-space: nowrap
+  text-indent: 16px
+
+  &:focus
+    border: 1px solid #{"{{ theme.link_hover }}"}
+    color: #{"{{ theme.link_hover }}"}
+
+input[type='textarea'], textarea
+  padding: 16px
+  text-indent: 0px
+  white-space: normal
+   
+.select
+  +pie-clearfix
+  border: 1px solid #{"{{ theme.link_color }}"}
+  box-sizing: border-box
+  color: #{"{{ theme.link_color }}"}
+  margin-bottom: 16px
+  position: relative
+  
+  &:hover 
+    background-color: #{"{{ theme.link_hover }}"}
+    border: 1px solid #{"{{ theme.link_hover }}"}
+    color: #{"{{ theme.background_color }}"}
+    
+  &:hover select
+    color: #{"{{ theme.background_color }}"}
+
+  select
+    background: none
+    border: 0px
+    border-radius: 0px
+    color: #{"{{ theme.link_color }}"}
+    font-weight: 600
+    height: 56px
+    line-height: 56px
+    padding: 0 55px 0 12px
+    position: relative
+    width: 100%
+    z-index: 2
+    
+    option
+      color: #000
+      background: #FFF
+    
+    &:focus
+      outline: none
+      
+    &::-ms-expand
+      display: none 
+      
+  svg
+    fill: #{"{{ theme.link_color }}"}
+    position: absolute
+    right: 32px
+    top: 26px
+    z-index: 1
+
+  &:hover svg
+    fill: #{"{{ theme.background_color }}"}
+           
+h1, h2, h3, h4, h5, h6, strong
+  font-family: #{"{{ theme.header_font | font_family }}"}
+  text-transform: uppercase
+  letter-spacing: .5em
+  text-indent: .5em
+
+  @media only screen and (max-width:$breakpoint-small)
+    letter-spacing: 0
+    text-indent: 0
+    white-space: normal
+
+strong
+  letter-spacing: .125em
+  text-indent: 0
+
+cite
+  font-style: normal
+
+// Headers
+
+h1
+  +font-size(28)
+
+h2
+  +font-size(24)
+
+h3
+  +font-size(20)
+
+h4
+  +font-size(16)
+
+h5
+  +font-size(12)
+
+h6
+  +font-size(12)
+
+// Errors
+
+.errors
+  background: #{"{{ theme.error_color }}"}
+  color: #{"{{ theme.background_color }}"}
+  list-style-type: none
+  text-align: center
+  padding: 16px
+
+.standalone
+  height: auto
+  margin: 0 auto
+  max-width: 500px
+  padding-top: 120px
+  text-align: center
+  
+  div
+    padding: 0 $marginSize

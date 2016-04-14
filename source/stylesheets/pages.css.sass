@@ -1,0 +1,55 @@
+@import 'compass'
+@import 'config'
+@import 'remfont'
+@import 'verticalalign'
+
+.custom
+
+  section.content
+    +pie-clearfix
+    box-sizing: border-box
+    margin: 0 auto
+    padding-left: $marginSize
+    padding-right: $marginSize
+    padding-bottom: 64px
+
+    @media only screen and (max-width:$breakpoint-small)
+      padding-left: $marginSize/2
+      padding-right: $marginSize/2
+
+    h1
+      clear: both
+      margin-bottom: 64px
+
+    h2, h3, h4, h5, h6
+      margin: 16px auto 32px auto
+      padding: 0
+      text-align: center
+
+    ol, ul
+      max-width: 800px
+      margin: 16px auto 32px auto
+
+    p
+      margin: 0 auto 16px auto
+      width: 100%
+      max-width: 800px
+
+      img
+        display: block
+        margin: 0 auto
+        text-align: center
+        padding-bottom: 16px
+        max-width: 100%
+
+        @media only screen and (max-width:$breakpoint-small)
+          width: 100%
+
+    iframe
+      display: block
+      margin: 0 auto
+      text-align: center
+      max-width: 100%
+
+      @media only screen and (max-width:$breakpoint-small)
+        width: 100%

@@ -1,0 +1,254 @@
+{
+  "name": "Neat",
+  "version": "1.4.9",
+  "images": [
+    {
+      "variable": "logo",
+      "label": "Logo",
+      "description": "Good for a logo up to 208 x 66 pixels"
+    }
+  ],
+  "image_sets": [
+    {
+      "variable": "slideshow_images",
+      "label": "Slideshow",
+      "description": "Adds a full screen slideshow to the homepage",
+      "defaults": [
+        "neat-slide-1.jpg",
+        "neat-slide-2.jpg",
+        "neat-slide-3.jpg"
+      ]
+    }
+  ],
+  "fonts": [
+    {
+      "variable": "header_font",
+      "label": "Header Font",
+      "default": "Dosis"
+    },
+    {
+      "variable": "text_font",
+      "label": "Text Font",
+      "default": "Open Sans"
+    }
+  ],
+  "colors": [
+    {
+      "variable": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "variable": "header_color",
+      "label": "Header Background",
+      "default": "#ffffff"
+    },
+    {
+      "variable": "header_link_color",
+      "label": "Header Links",
+      "default": "#919191"
+    },
+    {
+      "variable": "header_link_hover",
+      "label": "Header Link Hover",
+      "default": "#1b1b1b"
+    },
+    {
+      "variable": "welcome_text_color",
+      "label": "Welcome text",
+      "default": "#ffffff"
+    },
+    {
+      "variable": "text_color",
+      "label": "Text",
+      "default": "#1b1b1b"
+    },
+    {
+      "variable": "link_color",
+      "label": "Links",
+      "default": "#1b1b1b"
+    },
+    {
+      "variable": "link_hover",
+      "label": "Link Hover",
+      "default": "#000"
+    },
+    {
+      "variable": "border_color",
+      "label": "Borders",
+      "default": "#e2e2e2"
+    },
+    {
+      "variable": "error_color",
+      "label": "Errors",
+      "default": "#f25749"
+    }
+  ],
+  "checkout": {
+    "header_image": "{{ logo }}",
+    "header_image_max_width": "208px",
+    "header_image_max_height": "66px",
+    "title_font": "{{ header_font }}",
+    "title_font_size": "22px",
+    "title_color": "{{ header_link_color }}",
+    "title_background_color": "transparent",
+    "background_color": "{{ header_color }}",
+    "body_font": "{{ text_font }}",
+    "body_font_size": "14px",
+    "step_border_color":"{{ border_color }}",
+    "step_header_color":"{{ text_color }}",
+    "step_inactive_header_color":" {{ text_color }}",
+    "step_header_font":"{{ header_font }}",
+    "step_background_color":"{{ background_color }}",
+    "content_background_color":"{{ background_color }}",
+    "content_banded": "true",
+    "content_header_background_color":"{{ background_color }}",
+    "content_header_color":"{{ text_color }}",
+    "content_color":"{{ text_color }}",
+    "content_header_font_size":"18px",
+    "content_border_color":"transparent",
+    "content_border_radius":"0px",
+    "error_background_color": "#ea4859",
+    "error_color": "#ffffff",
+    "error_border_radius": "0",
+    "error_border_color": "#ea4859",
+    "input_focus_color": "#000000",
+    "input_focus_background_color": "#ffffff",
+    "input_focus_border_color": "#bfbfbf",
+    "input_error_border_color": "#ea4859",
+    "input_color": "#000000",
+    "input_error_color": "#000000",
+    "input_border_color": "#bfbfbf",
+    "input_background_color": "#ffffff",
+    "input_error_background_color": "#ffffff",
+    "input_border_radius":"0px",
+    "input_font":"{{ text_font }}",
+    "button_color":"{{ link_color }}",
+    "button_border_width":"1px",
+    "button_border_radius":"0px",
+    "button_hover_color":"{{ background_color }}",
+    "button_background_color":"transparent",
+    "button_hover_background_color":"{{ link_hover }}",
+    "button_border_color":"{{ link_color }}",
+    "button_hover_border_color":"{{ link_hover }}",
+    "link_color":"{{ link_color }}",
+    "link_hover_color":"{{ link_hover }}",
+    "step_header_font_size":"18px",
+    "summary_color":"{{ text_color }}",
+    "summary_secondary_color":"{{ link_color }}",
+    "summary_submit_background_color":"{{ background_color }}",
+    "summary_item_border_color":"{{ border_color }}",
+    "summary_item_list_border_color": "{{ border_color }}"
+  },
+  "options": [
+    {
+      "variable": "welcome_header",
+      "label": "Welcome header",
+      "type": "text",
+      "description": "Welcome header for homepage",
+      "default": "Welcome header for homepage"
+    },
+    {
+      "variable": "welcome_subheader",
+      "label": "Welcome subheader",
+      "type": "text",
+      "description": "Welcome subheader for homepage",
+      "default": "Welcome subheader for homepage"
+    },
+    {
+      "variable": "featured_subheader",
+      "label": "Featured subheader",
+      "type": "text",
+      "description": "Featured products subheader on homepage",
+      "default": "Featured products subheader"
+    },
+    {
+      "variable": "nav_items",
+      "label": "Navigation items",
+      "type": "select",
+      "options": "0..6",
+      "default": 2,
+      "description": "The number of custom page links show in the main navigation."
+    },
+    {
+      "variable": "products_per_page",
+      "label": "Products per page",
+      "type": "select",
+      "options": "1..100",
+      "default": 9,
+      "description": "The number of products shown at a time on the Products page"
+    },
+    {
+      "variable": "featured_products",
+      "label": "Featured products",
+      "type": "select",
+      "options": "0..100",
+      "default": 9,
+      "description": "The number of products featured on the Home page"
+    },
+    {
+      "variable": "secondary_product_images",
+      "label": "Secondary product images",
+      "type": "select",
+      "options": [
+        ["Full width", "full"],
+        ["Thumbnails", "thumbs"]
+      ],
+      "default": "full",
+      "description": "Display secondary product images full-width or as thumbnails on the Product page"
+    },
+    {
+      "variable": "collections",
+      "label": "Enable collections",
+      "type": "boolean",
+      "default": false,
+      "description": "Use category collections instead of the traditional product listing page"
+    },
+    {
+      "variable": "show_search",
+      "label": "Show search",
+      "type": "boolean",
+      "default": false,
+      "description": "Shows the product search area"
+    },
+    {
+      "variable": "show_inventory_bars",
+      "label": "Show inventory bars",
+      "type": "boolean",
+      "default": true,
+      "description": "Shows a product's inventory amounts (when using inventory tracking)",
+      "requires": "inventory"
+    },
+    {
+      "variable": "share_buttons",
+      "label": "Show social buttons",
+      "type": "boolean",
+      "default": true,
+      "description": "Adds Facebook, Twitter, and Pinterest buttons to Product pages"
+    },
+    {
+      "variable": "facebook_username",
+      "label": "Facebook Username",
+      "type": "text",
+      "description": "Ex: bigcartel"
+    },
+    {
+      "variable": "instagram_username",
+      "label": "Instagram Username",
+      "type": "text",
+      "description": "Ex: bigcartel"
+    },
+    {
+      "variable": "tumblr_username",
+      "label": "Tumblr Username",
+      "type": "text",
+      "description": "Ex: bigcartel"
+    },
+    {
+      "variable": "twitter_username",
+      "label": "Twitter Username",
+      "type": "text",
+      "description": "Ex: bigcartel"
+    }
+  ]
+}

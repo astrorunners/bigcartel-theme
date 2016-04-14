@@ -1,0 +1,96 @@
+@import 'compass'
+@import 'config'
+@import 'remfont'
+@import 'verticalalign'
+
+// Nunito is the closest to Avenir Next
+// @import url(https://fonts.googleapis.com/css?family=Nunito:400,700,300)
+//
+
+section.astro-headline
+  margin: 0 auto
+
+section.alternative
+  margin: 0 auto
+  padding: $marginSize $marginSize/2 $marginSize $marginSize/2
+
+#home .astro-headline
+  padding: 0 $marginSize/2 $marginSize $marginSize/2
+
+
+// headline, below the slideshow
+.astro-headline
+
+  h1
+    font-family: #{"{{ theme.header_font | font_family }}"}
+    font-size: 2.5em
+    font-weight: bold
+    text-transform: uppercase
+    text-align: center
+    letter-spacing: 3px
+    line-height: 36px
+
+  .subhead
+    padding-top: $marginSize/2
+    display: flex
+    align-items: center
+    text-align: center
+    width: 90%
+    margin: 0px auto
+    justify-content: space-around
+
+  .left
+    max-width: 25%
+
+  .middle
+    max-width: 50%
+    font-size: 24px
+    font-weight: bold
+    text-decoration: underline
+
+  .right
+    max-width: 25%
+
+
+// Alternative content (video and etc)
+.alternative
+  display: flex
+  flex-direction: column
+
+  .container
+    margin: 0 auto
+    width: 80%
+    text-align: center
+
+    > div
+      padding: $marginSize 0 $marginSize 0
+
+    .video
+      margin: 0 auto
+
+    .lunar
+      padding: $marginSize 0 $marginSize 0
+
+
+// Content (products or page)
+.content
+  background-color: #000
+  color: #fff
+
+  h1
+    color: #fff
+
+
+// Product items
+section.content .products_list a
+  color: #fff
+  text-decoration: none
+  opacity: 0.85
+
+  i
+    color: #fff
+
+  &:hover
+    transform: scale(1.05)
+    color: #fff
+    opacity: 1.0

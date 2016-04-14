@@ -1,0 +1,81 @@
+{% if theme.image_sets.slideshow_images.size > 0 or theme.welcome_header != blank or theme.welcome_subheader != blank %}
+    <section class="slideshow">
+      {% if theme.image_sets.slideshow_images.size > 0 %}
+        <ul class="slides-container">
+    	    {% for image in theme.image_sets.slideshow_images %}
+    	      <li><img src="{{ image.url | constrain: '1500' }}"></li>
+    	    {% endfor %}
+        </ul>
+      {% endif %}
+      {% if theme.welcome_header != blank or theme.welcome_subheader != blank %}
+      <div class="featured_holder">
+  	    <div class="featured">
+          {% if theme.welcome_subheader != blank %}<p>{{ theme.welcome_subheader }}</p>{% endif %}
+          {% if theme.welcome_header != blank %}<h2>{{ theme.welcome_header }}</h2>{% endif %}
+          <a href="/products" class="button">Shop Now</a>
+        </div>
+      </div>
+      {% endif %}
+    </section>
+{% endif %}
+
+<!-- Astrorunners headline -->
+<section class="astro-headline">
+  <h1> Welcome to the world of permanent change </h1>
+  <div class="subhead">
+    <img class="left" src="{{ 'astro/oca.png' | theme_image_url }}">
+    <div class="middle">Choose life. Choose a job. Choose a career. Choose a family, Choose a fucking big television, Choose washing machines, cars, compact disc players, and electrical tin openers.</div>
+    <img class="right" src="{{ 'astro/square.png' | theme_image_url }}">
+  </div>
+</section>
+
+{% if theme.featured_products > 0 %}
+  <section class="content">
+    <h1>Featured</h1>
+    {% if theme.featured_subheader != blank %}
+    <div class="subheader">
+      <p>{{ theme.featured_subheader }}</p>
+    </div>
+    {% endif %}
+    {% get products from products.all limit: theme.featured_products %}
+  	  {% if products != blank %}
+  	  	<ul class="products_list">
+    			{% for product in products %}
+    				<li class="{{ product.css_class }}">
+    					<a href="{{ product.url }}">
+    						<img alt="Image of {{ product.name | escape }}" src="{{ product.image | product_image_url | constrain: '900' }}">
+    						<b>{{ product.name }}</b>
+    						<i>{{ product.default_price | money_with_sign }}</i>
+    						{% case product.status %}
+    							{% when 'active' %}
+    								{% if product.on_sale %}<em>On Sale</em>{% endif %}
+    							{% when 'sold-out' %}
+    								<em>Sold Out</em>
+    							{% when 'coming-soon' %}
+    								<em>Coming Soon</em>
+    						{% endcase %}
+    					</a>
+    				</li>
+    			{% endfor %}
+  	    </ul>
+  	  {% else %}
+  	    <p class="no_results">No products found.</p>
+  	  {% endif %}
+    {% endget %}
+  </section>
+{% endif %}
+
+<!-- Alternative content -->
+<section class="alternative">
+
+  <div class="container">
+    <div class="video">
+      <iframe src="https://player.vimeo.com/video/52406619?color=999999&title=0&byline=0&portrait=0" width="100%" height="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    </div>
+
+    <div class="lunar">
+      <img src="{{ 'astro/lunar_mansions.png' | theme_image_url }}">
+    </div>
+  </div>
+
+</section>

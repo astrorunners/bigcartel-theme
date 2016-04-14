@@ -1,0 +1,590 @@
+@import 'compass'
+@import 'config'
+@import 'remfont'
+@import 'verticalalign'
+
+div.wrap
+  height: 100%
+  width: 100%
+
+header
+  +pie-clearfix
+  font-family: #{"{{ theme.text_font | font_family }}"}
+  font-weight: 600
+  height: 88px
+  position: relative
+  width: 100%
+  z-index: 999
+  
+  &.home
+    position: fixed
+
+    @media only screen and (max-width:$breakpoint-small)
+      position: #{"{% if theme.welcome_header == blank and theme.welcome_subheader == blank and theme.image_sets.slideshow_images.size == 0 %} relative {% else %} absolute {% endif %}"}
+
+    &:after
+      +opacity(0)
+      background-color: #{"{{ theme.header_color }}"}
+      border-bottom: 1px solid #{"{{ theme.border_color }}"}
+      content: " "
+      display: block
+      height: 100%
+      position: absolute
+      width: 100%
+      z-index: 96
+
+  &.overlay, &.page
+    position: fixed
+
+    &:after
+      +opacity(1)
+      background-color: #{"{{ theme.header_color }}"}
+      border-bottom: 1px solid #{"{{ theme.border_color }}"}
+      content: " "
+      display: block
+      height: 100%
+      position: absolute
+      width: 100%
+      z-index: 96
+
+    @media only screen and (max-width:$breakpoint-small)
+      position: relative
+
+    a
+      position: relative
+      color: #{"{{ theme.header_link_color }}"}
+
+      path,
+      circle
+        fill: #{"{{ theme.header_link_color }}"}
+
+      &:hover,
+        color: #{"{{ theme.header_link_hover }}"}
+
+        path,
+        circle
+          fill: #{"{{ theme.header_link_hover }}"}
+
+  a
+    position: relative
+    color: #{"{{ theme.welcome_text_color }}"}
+    clear: both
+
+    &.mobile
+      display: none
+
+      &:after
+        display: none
+
+      @media screen and (max-width: $breakpoint-small)
+        display: block
+
+    &.desktop
+      display: block
+
+      @media screen and (max-width: $breakpoint-small)
+        display: none
+
+    svg
+      cursor: pointer
+      position: relative
+      top: 3px
+
+    path,
+    circle
+      fill: #{"{{ theme.welcome_text_color }}"}
+
+
+    &:after
+      +opacity(0)
+      background-color: #{"{{ theme.background_color }}"}
+      content: " "
+      display: block
+      height: 1px
+      position: absolute
+      top: 24px
+      left: 0
+      width: 100%
+
+      @media screen and (max-width: $breakpoint-small)
+        display: none
+
+    &:hover
+      color: #{"{{ theme.welcome_text_color }}"}
+      opacity: .9
+
+      &:after
+        +opacity(1)
+
+      path,
+      circle
+        fill: #{"{{ theme.welcome_text_color }}"}
+
+  .logo
+    +box-sizing(border-box)
+    +font-size(24)
+    float: left
+    font-family: #{"{{ theme.header_font | font_family }}"}
+    max-width: 25%
+    padding-left: $marginSize
+    text-align: left
+    z-index: 98
+    width: 25%
+    +vertical-align
+
+    @media only screen and (max-width:$breakpoint-small)
+      +font-size(16)
+      line-height: 25px
+      max-width: 50%
+      padding-left: $marginSize/2
+      width: 50%
+      
+    a
+      display: block
+      max-width: 208px
+      
+      &:after
+        display: none
+      
+    &.image img
+      display: block
+      max-height: 100%
+      max-width: 100%
+      +vertical-align
+      
+    &.image a
+      height: 66px
+
+  .sections
+    float: left
+    margin: 0 auto
+    max-width: 50%
+    overflow: hidden
+    position: relative
+    width: 50%
+    z-index: 97
+    
+    @media only screen and (max-width:$breakpoint-small)
+      display: none
+
+  .utility
+    float: right
+    position: relative
+    max-width: 25%
+    z-index: 99
+    
+    @media only screen and (max-width:$breakpoint-small)
+      max-width: 50%
+
+.sections, .utility
+
+  ul
+    display: inline-block
+    margin: 0 auto
+    padding: 0
+    text-align: center
+    white-space: nowrap
+    width: 100%
+
+    li
+      +font-size(14)
+      display: inline-block
+      line-height: 88px
+      list-style: none
+      padding: 0 $marginSize/2
+      text-align: center
+
+      @media only screen and (max-width: $breakpoint-small)
+        padding: 0 8px
+
+      &:last-child
+        padding-right: $marginSize
+
+        @media only screen and (max-width: $breakpoint-small)
+          padding-right: $marginSize/2
+
+.nav_trigger svg
+  top: 0
+
+.cart
+  svg
+    margin-right: 5px
+
+  .desktop
+    display: inline
+
+    @media screen and (max-width: $breakpoint-small)
+      display: none
+
+.mobile_nav
+  +box-sizing(border-box)
+  background-color: rgba(black, .95)
+  display: none
+  line-height: 88px
+  height: 100%
+  left: 0
+  list-style: none
+  margin: 0
+  overflow: auto
+  padding: 15%
+  position: fixed
+  text-align: center
+  top: 0
+  width: 100%
+  z-index: 10001
+  
+  a
+    color: #FFF
+    
+    &:hover
+      opacity: .6
+ 
+  .close_nav
+    line-height: 22px
+    position: fixed
+    right: 15px
+    top: 36px
+    
+    
+    path
+      fill: #FFF
+      
+      &:hover
+        opacity: .6
+    
+  ul
+    list-style-type: none
+    margin: 0
+    padding: 0
+    
+  li
+    height: auto
+    line-height: 30px
+    margin-left: 0
+    
+    a
+      display: block
+      padding: 15px 0
+
+.slideshow
+  display: block
+  height: 100%
+  margin: 0
+  overflow: hidden
+  padding: 0
+  position: relative
+  width: 100%
+  z-index: 1
+  
+  @media only screen and (max-width:$breakpoint-small)
+    max-height: 640px
+    
+  div.featured_holder
+    background-color: rgba(black, .3)
+    +background(url('#{"{{ 'overlay_pattern.png' | theme_image_url }}"}'))
+    background-repeat: repeat
+    background-size: 4px  
+    height: 100%
+    position: absolute
+    top: 0
+    width: 100%
+    z-index: 100
+
+  div.featured
+    +vertical-align
+    color: #{"{{ theme.welcome_text_color }}"}
+    overflow: hidden
+    position: absolute
+    text-align: center
+    z-index: 2
+    width: 100%
+    
+    p
+      +font-size(14,20)
+      font-weight: 600
+      line-height: 18px
+      padding: 20px 16px 0px
+      text-transform: uppercase
+      
+      @media only screen and (max-width:$breakpoint-small)
+        line-height: 1.75rem
+
+    h2
+      +font-size(64)
+      letter-spacing: .25em
+      margin: 0 0 24px 0
+      text-transform: uppercase
+
+      @media only screen and (max-width:$breakpoint-small)
+        font-size: 9vw
+        letter-spacing: 0
+        line-height: 3.5rem
+        padding: 0 16px
+        text-indent: 0
+        white-space: normal
+
+    a
+      border: 1px solid #{"{{ theme.welcome_text_color }}"}
+      color: #{"{{ theme.welcome_text_color }}"}
+      width: auto
+      line-height: 56px
+
+      &:hover
+        border: 1px solid #{"{{ theme.link_hover }}"}
+        background-color: #{"{{ theme.link_hover }}"}
+        color: #{"{{ theme.welcome_text_color }}"}
+        
+  ul
+    display: block
+    height: 100%
+    margin: 0
+    padding: 0
+    position: relative
+    width: 100%
+
+    li
+      background-size: cover
+      background-position: 50% 50%
+      background-repeat: no-repeat
+      display: inline-block
+      height: 100%
+      list-style: none
+      position: relative
+      width: 100%
+      
+      img
+        -webkit-backface-visibility: hidden
+
+#home .content
+  padding: #{"{% if theme.welcome_header == blank and theme.welcome_subheader == blank and theme.image_sets.slideshow_images.size == 0 %} 144px{% else %} 64px{% endif %}"} 0 0 0
+
+  @media only screen and (max-width:$breakpoint-small)
+    padding-top: $marginSize
+
+  h1
+    margin-bottom: #{"{% if theme.featured_subheader == blank %} 48px {% else %} 16px {% endif %}"}
+
+.content
+  +pie-clearfix
+  display: block
+  margin: 0 auto
+  padding-top: 144px
+  position: relative
+  width: 100%
+
+  @media only screen and (max-width:$breakpoint-small)
+    padding-top: $marginSize
+
+  h1
+    color: #{"{{ theme.text_color }}"}
+    display: block
+    margin: 0 auto
+    text-align: center
+
+  .subheader
+    padding: 0 $marginSize $marginSize $marginSize
+    margin: $marginSize auto 0 auto
+
+    @media only screen and (max-width:$breakpoint-small)
+      margin: $marginSize/2 auto 0 auto
+
+    p
+      text-align: center
+      max-width: 800px
+      margin: 0 auto
+
+  .social_links
+    +box-sizing(border-box)
+    +font-size(16)
+    line-height: normal
+    list-style: none
+    margin: 0 auto $marginSize auto
+    max-width: 800px
+    padding: 0
+    text-align: center
+    width: 100%
+
+    li
+      +box-sizing(border-box)
+      border: 1px solid #{"{{ theme.border_color }}"}
+      border-width: 1px 0 1px 1px
+      display: inline-block
+      height: 56px
+      line-height: normal
+      margin: 0
+      padding: 0
+      width: 56px
+
+      &:last-child
+        border-width: 1px
+
+      &:hover
+        background-color: #{"{{ theme.link_hover }}"}
+        border-color: #{"{{ theme.link_hover }}"}
+
+      a
+        display: block
+        width: 56px
+        height: 56px
+        line-height: normal
+
+        svg
+          +scale(100%)
+          cursor: pointer
+          position: relative
+          +vertical-align
+
+        path,
+        circle
+          fill: #{"{{ theme.link_color }}"}
+
+      &:hover svg
+        path,
+        circle
+          fill: #{"{{ theme.background_color }}"}
+
+footer
+  +box-sizing(border-box)
+  +font-size(14)
+  +pie-clearfix
+  border-top: 1px solid #{"{{ theme.border_color }}"}
+  display: block
+  margin: 0 auto
+  position: relative
+  text-align: center
+  width: 100%
+  padding: $marginSize
+
+  @media only screen and (max-width:$breakpoint-small)
+    height: auto
+    margin-top: 32px
+    padding: 0
+
+  .footernav
+    float: right
+    position: relative
+    max-width: 60%
+
+    @media only screen and (max-width:$breakpoint-small)
+      display: block
+      float: none
+      line-height: 12px
+      margin: 0 auto
+      max-width: 100%
+      position: relative
+      width: 100%
+
+    ul
+      display: inline-block
+      line-height: normal
+      margin: 0
+      padding: 0
+      text-align: right
+      white-space: normal
+
+      @media only screen and (max-width:$breakpoint-small)
+        white-space: normal
+        width: 100%
+
+      li
+        +font-size(14)
+        display: inline-block
+        list-style: none
+        margin-bottom: 16px
+        padding: 0 $marginSize/2
+        text-align: center
+        
+        &:last-child
+          padding-right: 12px
+          
+          @media only screen and (max-width:$breakpoint-small)
+            padding-right: 0
+
+        @media only screen and (max-width:$breakpoint-small)
+          display: block
+          width: 100%
+          padding: 0
+          margin-bottom: 0
+
+          a
+            border-bottom: 1px solid #{"{{ theme.border_color }}"}
+            display: block
+            line-height: 56px
+            height: 56px
+            width: 100%
+              
+  .social_footer
+    list-style: none
+    left: 130px
+    padding: 0
+    margin: 0
+    position: absolute
+    top: 35px
+    
+    @media only screen and (max-width:$breakpoint-small)
+		
+      margin: 0
+      margin-top: $marginSize
+      padding: 0
+      width: 100%
+      position: relative
+      left: 0
+      top: 0
+      
+    li
+      display: inline-block
+      
+      a
+        display: block
+        padding: 0 12px
+        
+        svg
+          height: 18px
+          width: 18px
+      
+        path,
+        circle
+          fill: #{"{{ theme.link_color }}"}
+
+        &:hover,
+          color: #{"{{ theme.link_hover }}"}
+
+          path,
+          circle
+            fill: #{"{{ theme.link_hover }}"}
+  
+  cite
+    color: #{"{{ theme.link_color }}"}
+    left: $marginSize
+    position: absolute
+    top: $marginSize
+    white-space: nowrap
+
+    @media only screen and (max-width:$breakpoint-small)
+      clear: both
+      display: block
+      left: 0
+      padding-bottom: 32px
+      position: relative
+      width: 100%
+
+    > span
+      width: 100%
+
+      a
+        +hide-text
+        background: url(#{'{{ "bc_badge.svg" | theme_image_url }}'}) no-repeat
+        border: none
+        display: block
+        height: 24px
+        width: 80px
+        margin: 0 auto
+
+#success .content
+  margin: 0 auto 64px auto
+  max-width: 800px
+  text-align: center
+  width: 100%
+  
+  p 
+    padding: 0 $marginSize
