@@ -33,9 +33,6 @@ function isIE() {
 }
 $(document).ready(function () {
 
-  // youtube/Vimeo intrinsic aspect ratio
-  $('.video').fitVids();
-
 	$('.image_gallery').magnificPopup({
 		delegate: 'a',
 		type: 'image',
