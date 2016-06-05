@@ -86,7 +86,7 @@
   ],
   "checkout": {
     "header_image": "{{ logo }}",
-    "header_image_max_width": "208px",
+    "header_image_max_width": "238px",
     "header_image_max_height": "66px",
     "title_font": "{{ header_font }}",
     "title_font_size": "22px",

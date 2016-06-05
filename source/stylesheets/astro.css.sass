@@ -5,8 +5,34 @@
 
 // Nunito is the closest to Avenir Next
 // @import url(https://fonts.googleapis.com/css?family=Nunito:400,700,300)
-//
 
+// Header logo
+header
+  .logo
+    a
+      display: block
+      width: 240px
+      background-size: cover
+      background-position: 0px 0px
+
+    &.image
+      @media only screen and (max-width:$breakpoint-xsmall)
+        a
+          width: 130px
+          height: 32px
+
+  &.overlay .logo ,
+  &.page .logo
+
+    a
+      background-position: 0px -56px
+
+    @media only screen and (max-width:$breakpoint-xsmall)
+      a
+        background-position: 0px -36px
+
+
+// Middle
 section.astro-headline
   margin: 0 auto
 
@@ -15,14 +41,15 @@ section.alternative
   padding: $marginSize $marginSize/2 $marginSize $marginSize/2
 
 #home .astro-headline
-  padding: 0 $marginSize/2 $marginSize $marginSize/2
-
+  padding: 32px 32px 64px 16px
+  max-width: 80%
 
 // headline, below the slideshow
 .astro-headline
 
   h1
-    font-family: #{"{{ theme.header_font | font_family }}"}
+    // font-family: #{"{{ theme.header_font | font_family }}"}
+    font-family: 'Oswald', sans-serif
     font-size: 2.5em
     font-weight: bold
     text-transform: uppercase
@@ -41,12 +68,14 @@ section.alternative
 
   .left
     max-width: 25%
+    max-height: 100px
+
 
   .middle
-    max-width: 50%
-    font-size: 24px
-    font-weight: bold
-    text-decoration: underline
+    max-width: 80%
+    font-size: 15px
+    text-align: left
+    font-family: 'Alike', serif
 
   .right
     max-width: 25%
@@ -68,9 +97,17 @@ section.alternative
     .video
       margin: 0 auto
 
+    .glitch
+      margin: 0px auto
+
+      img
+        width: 40%
+
     .lunar
       padding: $marginSize 0 $marginSize 0
 
+      img
+        max-height: 128px
 
 // Content (products or page)
 .content
@@ -82,15 +119,27 @@ section.alternative
 
 
 // Product items
-section.content .products_list a
-  color: #fff
-  text-decoration: none
-  opacity: 0.85
+section.content .products_list
+  max-width: 80%
+  margin: 0px auto
 
-  i
-    color: #fff
+  li
+    overflow: visible !important
 
-  &:hover
-    transform: scale(1.05)
+  a
     color: #fff
-    opacity: 1.0
+    text-decoration: none
+    transition: all 0.3s ease-out
+
+    &:hover
+      text-decoration: underline
+
+    img
+      transition: all 0.15s ease-in-out
+      -moz-filter: grayscale(100%)
+      -webkit-filter: grayscale(100%)
+
+      &:hover
+        -moz-filter: none
+        -webkit-filter: none
+        transform: scale(1.05)

@@ -31,6 +31,8 @@ function isIE() {
   }
   return rv == -1 ? false : true;
 }
+var isWebkit = /webkit/.test( navigator.userAgent );
+
 $(document).ready(function () {
 
 	$('.image_gallery').magnificPopup({
@@ -80,7 +82,7 @@ $(document).ready(function () {
           }
         }
       },
-      offset: 120
+      offset: 100
     });
   } else {
     if ($('.content').length) {

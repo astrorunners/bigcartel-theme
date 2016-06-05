@@ -9,27 +9,44 @@
     {{ head_content }}
 
     <!-- Astrorunners js theme -->
+    <link href='https://fonts.googleapis.com/css?family=Oswald:700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Alike|Tinos|Poly' rel='stylesheet' type='text/css'>
+
+    <script src="//localhost:9293/javascripts/javascripts/vendor/jquery.fitvids.js" type="text/javascript"></script>
+    <script src="//localhost:9293/javascripts/astrorunners.js" type="text/javascript"></script>
+
+<!--
     <script src="//rawgit.com/astrorunners/bigcartel-theme/master/source/javascripts/vendor/jquery.fitvids.js" type="text/javascript"></script>
     <script src="//rawgit.com/astrorunners/bigcartel-theme/master/source/javascripts/astrorunners.js" type="text/javascript"></script>
+-->
   </head>
   <body id="{{ page.permalink }}" class="{{ page.category }}">
   <div class="wrap">
 	    <header {% if page.permalink =='home' %}class="home{% if theme.welcome_header == blank and theme.welcome_subheader == blank and theme.image_sets.slideshow_images.size == 0 %} overlay {% else %} has_featured{% endif %}"{% else %}class="page"{% endif %}>
       <div class="logo {% if theme.logo != blank %}image{% else %}text{% endif %}">
-        <a href="/" title="{{ store.name | escape }}">
+        <a href="/" title="{{ store.name | escape }}"
+           style="background-image: url({{theme.logo.url | contrain: '400'}});">
+        <!--
+           style="-webkit-mask-image: url({{theme.logo.url | constrain: '400'}});
+                  -mask: url({{theme.logo.url | constrain: '400'}}) no-repeat;" >
+
           {% if theme.logo != blank %}
             <img src="{{ theme.logo.url | constrain: '400' }}" alt="{{ store.name }}">
           {% else %}
             {{ store.name }}
           {% endif %}
+        -->
+
         </a>
       </div>
       <nav class="sections">
         <ul class="navigation">
+          <!--
           <li><a href="/products" title="{% if theme.collections %}Collections{% else %}Products{% endif %}">{% if theme.collections %}Collections{% else %}Products{% endif %}</a></li>
           {% for page in pages.all limit: theme.nav_items %}
             <li>{{ page | link_to }}</li>
           {% endfor %}
+          -->
         </ul>
       </nav>
       <nav class="utility">
@@ -120,7 +137,7 @@
   </div>
   <script>
     $(function() {
-  		if ($('.slides-container').length) { 
+  		if ($('.slides-container').length) {
   			$('.slideshow').superslides({
   				hashchange: false,
   				pagination:false,
