@@ -1,6 +1,6 @@
 $(document).ready( function () {
     // Video Aspect ratio
-    $('.video').fitVids();
+    //$('.video').fitVids();
 
     // Enable mask on logo
     // var isWebkit = /WebKit/.test( navigator.userAgent );
@@ -8,5 +8,5 @@ $(document).ready( function () {
     //   $('header .logo').addClass('masked');
     // }
 
-    console.log("astrorunners loaded.")
+    // console.log("astrorunners loaded.")
 });

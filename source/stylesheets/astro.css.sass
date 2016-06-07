@@ -96,6 +96,7 @@ section.alternative
 
     .video
       margin: 0 auto
+      height: 600px
 
     .glitch
       margin: 0px auto
@@ -136,10 +137,11 @@ section.content .products_list
 
     img
       transition: all 0.15s ease-in-out
-      -moz-filter: grayscale(100%)
       -webkit-filter: grayscale(100%)
+      filter: grayscale(100%)
 
       &:hover
         -moz-filter: none
         -webkit-filter: none
+        filter: none
         transform: scale(1.05)
