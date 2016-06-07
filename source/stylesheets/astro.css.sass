@@ -57,6 +57,9 @@ section.alternative
     letter-spacing: 3px
     line-height: 36px
 
+  .head
+    max-width: 100%
+
   .subhead
     padding-top: $marginSize/2
     display: flex
@@ -104,12 +107,6 @@ section.alternative
       img
         width: 40%
 
-    .lunar
-      padding: $marginSize 0 $marginSize 0
-
-      img
-        max-height: 128px
-
 // Content (products or page)
 .content
   background-color: #000
@@ -145,3 +142,14 @@ section.content .products_list
         -webkit-filter: none
         filter: none
         transform: scale(1.05)
+
+
+// Footer
+.lunar
+  position: absolute
+  bottom: 16px
+  padding: 0
+  width: 95%
+
+  img
+    max-height: 72px

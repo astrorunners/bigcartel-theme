@@ -12,7 +12,9 @@
     <link href='https://fonts.googleapis.com/css?family=Oswald:700' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Alike|Tinos|Poly' rel='stylesheet' type='text/css'>
 
-    <script src="//localhost:9293/javascripts/javascripts/vendor/jquery.fitvids.js" type="text/javascript"></script>
+    <!--
+      <script src="//localhost:9293/javascripts/javascripts/vendor/jquery.fitvids.js" type="text/javascript"></script>
+    -->
     <script src="//localhost:9293/javascripts/astrorunners.js" type="text/javascript"></script>
 
 <!--
@@ -123,15 +125,18 @@
     	    {% endif %}
     	  </ul>
   	  {% endif %}
-      <cite><span class="badge">{{ bigcartel_credit }}</span></cite>
+        <div class="lunar">
+          <img src="https://raw.githubusercontent.com/astrorunners/bigcartel-theme/master/source/images/astro/logolunarbranco.png">
+        </div>
     </footer>
 
     {% if theme.show_search %}
       <form action="/products" method="get" class="search">
         <input type="text" name="search" id="search" placeholder="Search products...">
-		<a href="#" class="close_search">
-			<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 10 10"><path d="M7.924 6.51l-2.474-2.475 2.475-2.475c.196-.195.196-.512 0-.707l-.708-.753c-.195-.195-.512-.195-.707 0l-2.474 2.521-2.475-2.475c-.195-.195-.512-.195-.707 0l-.707.754c-.196.195-.196.5 0 .707l2.475 2.475-2.475 2.428c-.196.195-.196.5 0 .707l.707.7c.195.2.5.2.7 0l2.475-2.475 2.481 2.482c.195.2.5.2.7 0l.707-.707c.204-.217.183-.517-.017-.707z"/></svg>
-		</a>
+
+        <a href="#" class="close_search">
+			       <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 10 10"><path d="M7.924 6.51l-2.474-2.475 2.475-2.475c.196-.195.196-.512 0-.707l-.708-.753c-.195-.195-.512-.195-.707 0l-2.474 2.521-2.475-2.475c-.195-.195-.512-.195-.707 0l-.707.754c-.196.195-.196.5 0 .707l2.475 2.475-2.475 2.428c-.196.195-.196.5 0 .707l.707.7c.195.2.5.2.7 0l2.475-2.475 2.481 2.482c.195.2.5.2.7 0l.707-.707c.204-.217.183-.517-.017-.707z"/></svg>
+		    </a>
       </form>
     {% endif %}
   </div>
