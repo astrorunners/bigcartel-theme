@@ -6,6 +6,9 @@
 // Nunito is the closest to Avenir Next
 // @import url(https://fonts.googleapis.com/css?family=Nunito:400,700,300)
 
+.button, submit, input[type='submit'], button
+  border: 0px !important
+
 // Header logo
 header
   .logo
@@ -144,12 +147,42 @@ section.content .products_list
         transform: scale(1.05)
 
 
-// Footer
+// Product page
+section.content
+  h1
+    font-family: 'Alike'
+    font-weight: lighter
+    letter-spacing: 6px
+
+  h4
+    letter-spacing: 3px
+
+  .products_list
+    a
+      b
+        font-weight: bold
+        font-family: 'Alike'
+        letter-spacing: 2px
+      i
+        opacity: 0.8
+
+  .product_description
+    h4
+      boder: 0px
+
+    .social_links li
+      border: 0
+
+    p:first-child
+      font-family: 'Alike'
+
+
 .lunar
   position: absolute
-  bottom: 16px
+  bottom: 26px
   padding: 0
   width: 95%
 
   img
-    max-height: 72px
+    max-height: 42px
+    opacity: 0.8
