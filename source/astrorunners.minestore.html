@@ -41,7 +41,8 @@
   <meta name="text: Banner 4 – Link"    content="http://"/>
   <meta name="image:Banner 5 – Imagem"  content=""/>
   <meta name="text: Banner 5 – Link"    content="http://"/>
-
+  <meta name="image:Banner 6 – Imagem"  content=""/>
+  <meta name="image:Banner 7 – Imagem"  content=""/>
 
 
   <meta name="text:Facebook"            content=""/>
@@ -66,11 +67,9 @@
   <meta property="og:image:width" content="1000">
   <meta property="og:image:height" content="1000">
 
-  {{#unless is_product_page}}
-    <meta property="og:image" content='{{resize_image theme.imagem_de_compartilhamento "1000x1000>"}}' />
-  {{/unless}}
+  <meta property="og:image" content='http:{{resize_image theme.imagem_de_compartilhamento "1000x1000>"}}' />
 
-  <link rel="shortcut icon" type="image/png" href="{{resize_image theme.favicon "32x32>"}}">
+  <link rel="shortcut icon" type="image/png" href="http:{{resize_image theme.favicon }}">
 
   <link  href='//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css' rel="stylesheet">
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -729,9 +728,661 @@ $.fn[plugin] = function(option, args) {
 $.fn[plugin].fx = {};
 
 })(this, jQuery);
+
+
+/*!
+Waypoints - 4.0.0
+Copyright © 2011-2015 Caleb Troughton
+Licensed under the MIT license.
+https://github.com/imakewebthings/waypoints/blog/master/licenses.txt
+*/
+(function() {
+  'use strict'
+
+  var keyCounter = 0
+  var allWaypoints = {}
+
+  /* http://imakewebthings.com/waypoints/api/waypoint */
+  function Waypoint(options) {
+    if (!options) {
+      throw new Error('No options passed to Waypoint constructor')
+    }
+    if (!options.element) {
+      throw new Error('No element option passed to Waypoint constructor')
+    }
+    if (!options.handler) {
+      throw new Error('No handler option passed to Waypoint constructor')
+    }
+
+    this.key = 'waypoint-' + keyCounter
+    this.options = Waypoint.Adapter.extend({}, Waypoint.defaults, options)
+    this.element = this.options.element
+    this.adapter = new Waypoint.Adapter(this.element)
+    this.callback = options.handler
+    this.axis = this.options.horizontal ? 'horizontal' : 'vertical'
+    this.enabled = this.options.enabled
+    this.triggerPoint = null
+    this.group = Waypoint.Group.findOrCreate({
+      name: this.options.group,
+      axis: this.axis
+    })
+    this.context = Waypoint.Context.findOrCreateByElement(this.options.context)
+
+    if (Waypoint.offsetAliases[this.options.offset]) {
+      this.options.offset = Waypoint.offsetAliases[this.options.offset]
+    }
+    this.group.add(this)
+    this.context.add(this)
+    allWaypoints[this.key] = this
+    keyCounter += 1
+  }
+
+  /* Private */
+  Waypoint.prototype.queueTrigger = function(direction) {
+    this.group.queueTrigger(this, direction)
+  }
+
+  /* Private */
+  Waypoint.prototype.trigger = function(args) {
+    if (!this.enabled) {
+      return
+    }
+    if (this.callback) {
+      this.callback.apply(this, args)
+    }
+  }
+
+  /* Public */
+  /* http://imakewebthings.com/waypoints/api/destroy */
+  Waypoint.prototype.destroy = function() {
+    this.context.remove(this)
+    this.group.remove(this)
+    delete allWaypoints[this.key]
+  }
+
+  /* Public */
+  /* http://imakewebthings.com/waypoints/api/disable */
+  Waypoint.prototype.disable = function() {
+    this.enabled = false
+    return this
+  }
+
+  /* Public */
+  /* http://imakewebthings.com/waypoints/api/enable */
+  Waypoint.prototype.enable = function() {
+    this.context.refresh()
+    this.enabled = true
+    return this
+  }
+
+  /* Public */
+  /* http://imakewebthings.com/waypoints/api/next */
+  Waypoint.prototype.next = function() {
+    return this.group.next(this)
+  }
+
+  /* Public */
+  /* http://imakewebthings.com/waypoints/api/previous */
+  Waypoint.prototype.previous = function() {
+    return this.group.previous(this)
+  }
+
+  /* Private */
+  Waypoint.invokeAll = function(method) {
+    var allWaypointsArray = []
+    for (var waypointKey in allWaypoints) {
+      allWaypointsArray.push(allWaypoints[waypointKey])
+    }
+    for (var i = 0, end = allWaypointsArray.length; i < end; i++) {
+      allWaypointsArray[i][method]()
+    }
+  }
+
+  /* Public */
+  /* http://imakewebthings.com/waypoints/api/destroy-all */
+  Waypoint.destroyAll = function() {
+    Waypoint.invokeAll('destroy')
+  }
+
+  /* Public */
+  /* http://imakewebthings.com/waypoints/api/disable-all */
+  Waypoint.disableAll = function() {
+    Waypoint.invokeAll('disable')
+  }
+
+  /* Public */
+  /* http://imakewebthings.com/waypoints/api/enable-all */
+  Waypoint.enableAll = function() {
+    Waypoint.invokeAll('enable')
+  }
+
+  /* Public */
+  /* http://imakewebthings.com/waypoints/api/refresh-all */
+  Waypoint.refreshAll = function() {
+    Waypoint.Context.refreshAll()
+  }
+
+  /* Public */
+  /* http://imakewebthings.com/waypoints/api/viewport-height */
+  Waypoint.viewportHeight = function() {
+    return window.innerHeight || document.documentElement.clientHeight
+  }
+
+  /* Public */
+  /* http://imakewebthings.com/waypoints/api/viewport-width */
+  Waypoint.viewportWidth = function() {
+    return document.documentElement.clientWidth
+  }
+
+  Waypoint.adapters = []
+
+  Waypoint.defaults = {
+    context: window,
+    continuous: true,
+    enabled: true,
+    group: 'default',
+    horizontal: false,
+    offset: 0
+  }
+
+  Waypoint.offsetAliases = {
+    'bottom-in-view': function() {
+      return this.context.innerHeight() - this.adapter.outerHeight()
+    },
+    'right-in-view': function() {
+      return this.context.innerWidth() - this.adapter.outerWidth()
+    }
+  }
+
+  window.Waypoint = Waypoint
+}())
+;(function() {
+  'use strict'
+
+  function requestAnimationFrameShim(callback) {
+    window.setTimeout(callback, 1000 / 60)
+  }
+
+  var keyCounter = 0
+  var contexts = {}
+  var Waypoint = window.Waypoint
+  var oldWindowLoad = window.onload
+
+  /* http://imakewebthings.com/waypoints/api/context */
+  function Context(element) {
+    this.element = element
+    this.Adapter = Waypoint.Adapter
+    this.adapter = new this.Adapter(element)
+    this.key = 'waypoint-context-' + keyCounter
+    this.didScroll = false
+    this.didResize = false
+    this.oldScroll = {
+      x: this.adapter.scrollLeft(),
+      y: this.adapter.scrollTop()
+    }
+    this.waypoints = {
+      vertical: {},
+      horizontal: {}
+    }
+
+    element.waypointContextKey = this.key
+    contexts[element.waypointContextKey] = this
+    keyCounter += 1
+
+    this.createThrottledScrollHandler()
+    this.createThrottledResizeHandler()
+  }
+
+  /* Private */
+  Context.prototype.add = function(waypoint) {
+    var axis = waypoint.options.horizontal ? 'horizontal' : 'vertical'
+    this.waypoints[axis][waypoint.key] = waypoint
+    this.refresh()
+  }
+
+  /* Private */
+  Context.prototype.checkEmpty = function() {
+    var horizontalEmpty = this.Adapter.isEmptyObject(this.waypoints.horizontal)
+    var verticalEmpty = this.Adapter.isEmptyObject(this.waypoints.vertical)
+    if (horizontalEmpty && verticalEmpty) {
+      this.adapter.off('.waypoints')
+      delete contexts[this.key]
+    }
+  }
+
+  /* Private */
+  Context.prototype.createThrottledResizeHandler = function() {
+    var self = this
+
+    function resizeHandler() {
+      self.handleResize()
+      self.didResize = false
+    }
+
+    this.adapter.on('resize.waypoints', function() {
+      if (!self.didResize) {
+        self.didResize = true
+        Waypoint.requestAnimationFrame(resizeHandler)
+      }
+    })
+  }
+
+  /* Private */
+  Context.prototype.createThrottledScrollHandler = function() {
+    var self = this
+    function scrollHandler() {
+      self.handleScroll()
+      self.didScroll = false
+    }
+
+    this.adapter.on('scroll.waypoints', function() {
+      if (!self.didScroll || Waypoint.isTouch) {
+        self.didScroll = true
+        Waypoint.requestAnimationFrame(scrollHandler)
+      }
+    })
+  }
+
+  /* Private */
+  Context.prototype.handleResize = function() {
+    Waypoint.Context.refreshAll()
+  }
+
+  /* Private */
+  Context.prototype.handleScroll = function() {
+    var triggeredGroups = {}
+    var axes = {
+      horizontal: {
+        newScroll: this.adapter.scrollLeft(),
+        oldScroll: this.oldScroll.x,
+        forward: 'right',
+        backward: 'left'
+      },
+      vertical: {
+        newScroll: this.adapter.scrollTop(),
+        oldScroll: this.oldScroll.y,
+        forward: 'down',
+        backward: 'up'
+      }
+    }
+
+    for (var axisKey in axes) {
+      var axis = axes[axisKey]
+      var isForward = axis.newScroll > axis.oldScroll
+      var direction = isForward ? axis.forward : axis.backward
+
+      for (var waypointKey in this.waypoints[axisKey]) {
+        var waypoint = this.waypoints[axisKey][waypointKey]
+        var wasBeforeTriggerPoint = axis.oldScroll < waypoint.triggerPoint
+        var nowAfterTriggerPoint = axis.newScroll >= waypoint.triggerPoint
+        var crossedForward = wasBeforeTriggerPoint && nowAfterTriggerPoint
+        var crossedBackward = !wasBeforeTriggerPoint && !nowAfterTriggerPoint
+        if (crossedForward || crossedBackward) {
+          waypoint.queueTrigger(direction)
+          triggeredGroups[waypoint.group.id] = waypoint.group
+        }
+      }
+    }
+
+    for (var groupKey in triggeredGroups) {
+      triggeredGroups[groupKey].flushTriggers()
+    }
+
+    this.oldScroll = {
+      x: axes.horizontal.newScroll,
+      y: axes.vertical.newScroll
+    }
+  }
+
+  /* Private */
+  Context.prototype.innerHeight = function() {
+    /*eslint-disable eqeqeq */
+    if (this.element == this.element.window) {
+      return Waypoint.viewportHeight()
+    }
+    /*eslint-enable eqeqeq */
+    return this.adapter.innerHeight()
+  }
+
+  /* Private */
+  Context.prototype.remove = function(waypoint) {
+    delete this.waypoints[waypoint.axis][waypoint.key]
+    this.checkEmpty()
+  }
+
+  /* Private */
+  Context.prototype.innerWidth = function() {
+    /*eslint-disable eqeqeq */
+    if (this.element == this.element.window) {
+      return Waypoint.viewportWidth()
+    }
+    /*eslint-enable eqeqeq */
+    return this.adapter.innerWidth()
+  }
+
+  /* Public */
+  /* http://imakewebthings.com/waypoints/api/context-destroy */
+  Context.prototype.destroy = function() {
+    var allWaypoints = []
+    for (var axis in this.waypoints) {
+      for (var waypointKey in this.waypoints[axis]) {
+        allWaypoints.push(this.waypoints[axis][waypointKey])
+      }
+    }
+    for (var i = 0, end = allWaypoints.length; i < end; i++) {
+      allWaypoints[i].destroy()
+    }
+  }
+
+  /* Public */
+  /* http://imakewebthings.com/waypoints/api/context-refresh */
+  Context.prototype.refresh = function() {
+    /*eslint-disable eqeqeq */
+    var isWindow = this.element == this.element.window
+    /*eslint-enable eqeqeq */
+    var contextOffset = isWindow ? undefined : this.adapter.offset()
+    var triggeredGroups = {}
+    var axes
+
+    this.handleScroll()
+    axes = {
+      horizontal: {
+        contextOffset: isWindow ? 0 : contextOffset.left,
+        contextScroll: isWindow ? 0 : this.oldScroll.x,
+        contextDimension: this.innerWidth(),
+        oldScroll: this.oldScroll.x,
+        forward: 'right',
+        backward: 'left',
+        offsetProp: 'left'
+      },
+      vertical: {
+        contextOffset: isWindow ? 0 : contextOffset.top,
+        contextScroll: isWindow ? 0 : this.oldScroll.y,
+        contextDimension: this.innerHeight(),
+        oldScroll: this.oldScroll.y,
+        forward: 'down',
+        backward: 'up',
+        offsetProp: 'top'
+      }
+    }
+
+    for (var axisKey in axes) {
+      var axis = axes[axisKey]
+      for (var waypointKey in this.waypoints[axisKey]) {
+        var waypoint = this.waypoints[axisKey][waypointKey]
+        var adjustment = waypoint.options.offset
+        var oldTriggerPoint = waypoint.triggerPoint
+        var elementOffset = 0
+        var freshWaypoint = oldTriggerPoint == null
+        var contextModifier, wasBeforeScroll, nowAfterScroll
+        var triggeredBackward, triggeredForward
+
+        if (waypoint.element !== waypoint.element.window) {
+          elementOffset = waypoint.adapter.offset()[axis.offsetProp]
+        }
+
+        if (typeof adjustment === 'function') {
+          adjustment = adjustment.apply(waypoint)
+        }
+        else if (typeof adjustment === 'string') {
+          adjustment = parseFloat(adjustment)
+          if (waypoint.options.offset.indexOf('%') > - 1) {
+            adjustment = Math.ceil(axis.contextDimension * adjustment / 100)
+          }
+        }
+
+        contextModifier = axis.contextScroll - axis.contextOffset
+        waypoint.triggerPoint = elementOffset + contextModifier - adjustment
+        wasBeforeScroll = oldTriggerPoint < axis.oldScroll
+        nowAfterScroll = waypoint.triggerPoint >= axis.oldScroll
+        triggeredBackward = wasBeforeScroll && nowAfterScroll
+        triggeredForward = !wasBeforeScroll && !nowAfterScroll
+
+        if (!freshWaypoint && triggeredBackward) {
+          waypoint.queueTrigger(axis.backward)
+          triggeredGroups[waypoint.group.id] = waypoint.group
+        }
+        else if (!freshWaypoint && triggeredForward) {
+          waypoint.queueTrigger(axis.forward)
+          triggeredGroups[waypoint.group.id] = waypoint.group
+        }
+        else if (freshWaypoint && axis.oldScroll >= waypoint.triggerPoint) {
+          waypoint.queueTrigger(axis.forward)
+          triggeredGroups[waypoint.group.id] = waypoint.group
+        }
+      }
+    }
+
+    Waypoint.requestAnimationFrame(function() {
+      for (var groupKey in triggeredGroups) {
+        triggeredGroups[groupKey].flushTriggers()
+      }
+    })
+
+    return this
+  }
+
+  /* Private */
+  Context.findOrCreateByElement = function(element) {
+    return Context.findByElement(element) || new Context(element)
+  }
+
+  /* Private */
+  Context.refreshAll = function() {
+    for (var contextId in contexts) {
+      contexts[contextId].refresh()
+    }
+  }
+
+  /* Public */
+  /* http://imakewebthings.com/waypoints/api/context-find-by-element */
+  Context.findByElement = function(element) {
+    return contexts[element.waypointContextKey]
+  }
+
+  window.onload = function() {
+    if (oldWindowLoad) {
+      oldWindowLoad()
+    }
+    Context.refreshAll()
+  }
+
+  Waypoint.requestAnimationFrame = function(callback) {
+    var requestFn = window.requestAnimationFrame ||
+      window.mozRequestAnimationFrame ||
+      window.webkitRequestAnimationFrame ||
+      requestAnimationFrameShim
+    requestFn.call(window, callback)
+  }
+  Waypoint.Context = Context
+}())
+;(function() {
+  'use strict'
+
+  function byTriggerPoint(a, b) {
+    return a.triggerPoint - b.triggerPoint
+  }
+
+  function byReverseTriggerPoint(a, b) {
+    return b.triggerPoint - a.triggerPoint
+  }
+
+  var groups = {
+    vertical: {},
+    horizontal: {}
+  }
+  var Waypoint = window.Waypoint
+
+  /* http://imakewebthings.com/waypoints/api/group */
+  function Group(options) {
+    this.name = options.name
+    this.axis = options.axis
+    this.id = this.name + '-' + this.axis
+    this.waypoints = []
+    this.clearTriggerQueues()
+    groups[this.axis][this.name] = this
+  }
+
+  /* Private */
+  Group.prototype.add = function(waypoint) {
+    this.waypoints.push(waypoint)
+  }
+
+  /* Private */
+  Group.prototype.clearTriggerQueues = function() {
+    this.triggerQueues = {
+      up: [],
+      down: [],
+      left: [],
+      right: []
+    }
+  }
+
+  /* Private */
+  Group.prototype.flushTriggers = function() {
+    for (var direction in this.triggerQueues) {
+      var waypoints = this.triggerQueues[direction]
+      var reverse = direction === 'up' || direction === 'left'
+      waypoints.sort(reverse ? byReverseTriggerPoint : byTriggerPoint)
+      for (var i = 0, end = waypoints.length; i < end; i += 1) {
+        var waypoint = waypoints[i]
+        if (waypoint.options.continuous || i === waypoints.length - 1) {
+          waypoint.trigger([direction])
+        }
+      }
+    }
+    this.clearTriggerQueues()
+  }
+
+  /* Private */
+  Group.prototype.next = function(waypoint) {
+    this.waypoints.sort(byTriggerPoint)
+    var index = Waypoint.Adapter.inArray(waypoint, this.waypoints)
+    var isLast = index === this.waypoints.length - 1
+    return isLast ? null : this.waypoints[index + 1]
+  }
+
+  /* Private */
+  Group.prototype.previous = function(waypoint) {
+    this.waypoints.sort(byTriggerPoint)
+    var index = Waypoint.Adapter.inArray(waypoint, this.waypoints)
+    return index ? this.waypoints[index - 1] : null
+  }
+
+  /* Private */
+  Group.prototype.queueTrigger = function(waypoint, direction) {
+    this.triggerQueues[direction].push(waypoint)
+  }
+
+  /* Private */
+  Group.prototype.remove = function(waypoint) {
+    var index = Waypoint.Adapter.inArray(waypoint, this.waypoints)
+    if (index > -1) {
+      this.waypoints.splice(index, 1)
+    }
+  }
+
+  /* Public */
+  /* http://imakewebthings.com/waypoints/api/first */
+  Group.prototype.first = function() {
+    return this.waypoints[0]
+  }
+
+  /* Public */
+  /* http://imakewebthings.com/waypoints/api/last */
+  Group.prototype.last = function() {
+    return this.waypoints[this.waypoints.length - 1]
+  }
+
+  /* Private */
+  Group.findOrCreate = function(options) {
+    return groups[options.axis][options.name] || new Group(options)
+  }
+
+  Waypoint.Group = Group
+}())
+;(function() {
+  'use strict'
+
+  var $ = window.jQuery
+  var Waypoint = window.Waypoint
+
+  function JQueryAdapter(element) {
+    this.$element = $(element)
+  }
+
+  $.each([
+    'innerHeight',
+    'innerWidth',
+    'off',
+    'offset',
+    'on',
+    'outerHeight',
+    'outerWidth',
+    'scrollLeft',
+    'scrollTop'
+  ], function(i, method) {
+    JQueryAdapter.prototype[method] = function() {
+      var args = Array.prototype.slice.call(arguments)
+      return this.$element[method].apply(this.$element, args)
+    }
+  })
+
+  $.each([
+    'extend',
+    'inArray',
+    'isEmptyObject'
+  ], function(i, method) {
+    JQueryAdapter[method] = $[method]
+  })
+
+  Waypoint.adapters.push({
+    name: 'jquery',
+    Adapter: JQueryAdapter
+  })
+  Waypoint.Adapter = JQueryAdapter
+}())
+;(function() {
+  'use strict'
+
+  var Waypoint = window.Waypoint
+
+  function createExtension(framework) {
+    return function() {
+      var waypoints = []
+      var overrides = arguments[0]
+
+      if (framework.isFunction(arguments[0])) {
+        overrides = framework.extend({}, arguments[1])
+        overrides.handler = arguments[0]
+      }
+
+      this.each(function() {
+        var options = framework.extend({}, overrides, {
+          element: this
+        })
+        if (typeof options.context === 'string') {
+          options.context = framework(this).closest(options.context)[0]
+        }
+        waypoints.push(new Waypoint(options))
+      })
+
+      return waypoints
+    }
+  }
+
+  if (window.jQuery) {
+    window.jQuery.fn.waypoint = createExtension(window.jQuery)
+  }
+  if (window.Zepto) {
+    window.Zepto.fn.waypoint = createExtension(window.Zepto)
+  }
+}())
+;
 </script>
 
   <script src='//cdnjs.cloudflare.com/ajax/libs/retina.js/1.3.0/retina.min.js'></script>
+  <script src="https://npmcdn.com/imagesloaded@4.1/imagesloaded.pkgd.min.js"></script>
 
   <link href='https://fonts.googleapis.com/css?family=Alike|Tinos|Poly' rel='stylesheet' type='text/css'>
 
@@ -1475,7 +2126,7 @@ $.fn[plugin].fx = {};
   header {
     *zoom: 1;
     font-family: "Alike";
-    font-weight: 600;
+    font-weight: 100;
     height: 88px;
     position: relative;
     width: 100%;
@@ -1498,7 +2149,6 @@ $.fn[plugin].fx = {};
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
     opacity: 0;
     background-color: #fff;
-    border-bottom: 1px solid {{ theme.pagina_fundo }};
     content: " ";
     display: block;
     height: 100%;
@@ -1513,7 +2163,6 @@ $.fn[plugin].fx = {};
     filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=100);
     opacity: 1;
     background-color: #fff;
-    border-bottom: 1px solid {{ theme.pagina_fundo }};
     content: " ";
     display: block;
     height: 100%;
@@ -1787,7 +2436,7 @@ $.fn[plugin].fx = {};
 
   .slideshow {
     display: block;
-    height: 100%;
+    height: 100vh;
     margin: 0;
     overflow: hidden;
     padding: 0;
@@ -2029,7 +2678,15 @@ $.fn[plugin].fx = {};
     footer {
       height: auto;
       margin-top: 32px;
+      margin-bottom: 32px;
       padding: 0;
+    }
+
+    footer .lunar {
+      position: relative;
+      display: block;
+      bottom: 0px;
+      margin: 32px 0px;
     }
   }
   footer .footernav {
@@ -2107,7 +2764,6 @@ $.fn[plugin].fx = {};
   @media only screen and (max-width: 800px) {
     footer .social_footer {
       margin: 0;
-      margin-top: 32px;
       padding: 0;
       width: 100%;
       position: relative;
@@ -2180,6 +2836,7 @@ $.fn[plugin].fx = {};
   section.content {
     *zoom: 1;
     margin: 0 auto;
+    min-height: 90vh;
   }
   section.content:after {
     content: "";
@@ -3024,128 +3681,6 @@ $.fn[plugin].fx = {};
     }
 
   }
-  #contact section.content {
-    *zoom: 1;
-    box-sizing: border-box;
-    margin: 0 auto;
-    max-width: 1280px;
-    padding-left: 32px;
-    padding-right: 32px;
-  }
-  #contact section.content:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-  #contact section.content h1 {
-    margin: 0 auto 32px auto;
-  }
-  #contact .contact {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    list-style: none;
-    margin: 0 auto;
-    max-width: 800px;
-    padding: 0;
-  }
-  #contact .contact li {
-    border-bottom: 1px solid {{ theme.pagina_texto }};
-    display: block;
-    margin: 32px auto;
-    padding-bottom: 32px;
-    position: relative;
-    overflow: hidden;
-  }
-  #contact .contact li > div {
-    display: block;
-    float: left;
-    overflow: hidden;
-    position: relative;
-    width: 55%;
-  }
-  @media only screen and (max-width: 800px) {
-    #contact .contact li > div {
-      width: 100%;
-    }
-  }
-  #contact .contact li > div input[type='text'] {
-    padding-right: 143px;
-    width: 100%;
-  }
-  @media only screen and (max-width: 800px) {
-    #contact .contact li {
-      margin: 0;
-    }
-  }
-  #contact .contact li label {
-    font-size: 16px;
-    line-height: 24px;
-    font-size: 1rem;
-    line-height: 1.5rem;
-    display: block;
-    float: left;
-    line-height: 56px;
-    margin-right: 32px;
-    text-align: right;
-    width: 20%;
-  }
-  @media only screen and (max-width: 800px) {
-    #contact .contact li label {
-      clear: both;
-      margin: 0;
-      text-align: left;
-      width: 100%;
-    }
-  }
-  #contact .contact li input[type='text'], #contact .contact li textarea {
-    display: block;
-    float: left;
-    height: 56px;
-    width: 55%;
-  }
-  @media only screen and (max-width: 800px) {
-    #contact .contact li input[type='text'], #contact .contact li textarea {
-      width: 100%;
-    }
-  }
-  #contact .contact li span {
-    overflow: hidden;
-    *zoom: 1;
-    font-size: 12px;
-    line-height: 18px;
-    font-size: 0.75rem;
-    line-height: 1.125rem;
-    display: inline-block;
-    margin-top: 16px;
-    white-space: nowrap;
-  }
-  #contact .contact li .captcha_image {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    overflow: hidden;
-    *zoom: 1;
-    border: 1px solid {{ theme.tamanho_da_fonte }};
-    display: block;
-    height: 56px;
-    right: 0;
-    max-width: 128px;
-    position: absolute;
-    text-align: center;
-  }
-  #contact .contact li .captcha_image img {
-    display: block;
-  }
-  #contact .contact li textarea {
-    height: 256px;
-    padding-top: 16px;
-  }
-  #contact button {
-    display: block;
-    margin: 64px auto 64px auto;
-    max-width: 320px;
-  }
   .search {
     -webkit-transition-property: all;
     -moz-transition-property: all;
@@ -3234,6 +3769,16 @@ $.fn[plugin].fx = {};
     }
   }
 
+  @media only screen and (min-width: 120px){
+    a.badge {
+      visibility: hidden;
+    }
+  }
+
+  .navigation .navigation_item a {
+    letter-spacing: 3px;
+  }
+
   section.astro-headline {
     width: 80%;
     margin: 0 auto;
@@ -3313,7 +3858,7 @@ $.fn[plugin].fx = {};
     margin: 0px auto;
   }
   .alternative .container .glitch img {
-    width: 40%;
+    width: 60%;
   }
 
   .content {
@@ -3405,7 +3950,7 @@ $.fn[plugin].fx = {};
     position: absolute;
     bottom: 26px;
     padding: 0;
-    width: 95%;
+    width: 96%;
     pointer-events: none;
   }
   .lunar img {
@@ -3461,6 +4006,48 @@ $.fn[plugin].fx = {};
     align-items: center;
   }
 
+  .content .custom-page .sobre-astro {
+    max-width: 140px;
+    opacity: 0.3;
+  }
+
+  .content .custom-page.sobre-page {
+    text-align: center;
+    font-size: 12px;
+  }
+
+  .content .custom-page.sobre-page a {
+    text-decoration: underline;
+    text-align: center;
+    font-size: 12px;
+  }
+
+  .content .custom-page.sobre-page p {
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .content .custom-page.termos-de-uso * {
+    font-size: 12px;
+    text-align: center;
+  }
+
+  @media only screen and (max-width: 800px) {
+      .content .custom-page {
+        padding-top: 46px;
+        width: 80%;
+        margin: 0px auto;
+      }
+
+      #product .product_info {
+        padding-top: 46px;
+      }
+
+      #mine-cart-page {
+        padding-top: 46px;
+      }
+  }
+
   </style>
 
 
@@ -3493,8 +4080,14 @@ $.fn[plugin].fx = {};
       {{/if}}
 
       <nav class="sections">
-
+<!--
         <ul class="navigation">
+          <li class="navigation_item">
+            <a href="http://tumblr.com/astrorunners">
+              lookbook
+            </a>
+          </li>
+
             {{#each categories}}
               <li class="navigation_item {{#if has_children}}has_children{{/if}} {{#if is_current}}selected{{/if}}">
                 <a href="{{url}}">
@@ -3502,11 +4095,22 @@ $.fn[plugin].fx = {};
                 </a>
               </li>
             {{/each}}
+          -->
           </ul>
         </nav>
 
         <nav class="utility">
           <ul>
+            <li class="navigation_item">
+              <a href="http://astrorunners.tumblr.com/">
+                Lookbook
+              </a>
+            </li>
+            <li class="navigation_item">
+              <a href="http://astrorunners.tumblr.com/">
+                Blog
+              </a>
+            </li>
 
             <li id="cart_link" class="store_link {{#is_cart_page}}selected{{/is_cart_page}}">
               <a href="{{cart_url}}">
@@ -3544,6 +4148,13 @@ $.fn[plugin].fx = {};
                 {{#if theme.banner_5_imagem}}
                   <li><img src="{{resize_image theme.banner_5_imagem "1350x770>"}}" data-at2x="{{resize_image theme.banner_5_imagem "2700x1540>"}}"></li>
                 {{/if}}
+                {{#if theme.banner_6_imagem}}
+                  <li><img src="{{resize_image theme.banner_6_imagem "1350x770>"}}" data-at2x="{{resize_image theme.banner_6_imagem "2700x1540>"}}"></li>
+                {{/if}}
+                {{#if theme.banner_7_imagem}}
+                  <li><img src="{{resize_image theme.banner_7_imagem "1350x770>"}}" data-at2x="{{resize_image theme.banner_7_imagem "2700x1540>"}}"></li>
+                {{/if}}
+
               </ul>
             </div>
           {{/if}}
@@ -3564,21 +4175,24 @@ $.fn[plugin].fx = {};
         {{/home_page}}
 
         {{#sobre_page}}
-          <article class="custom-page">
-            <h1 class="page-title">Sobre</h1>
+          <article class="custom-page sobre-page">
             {{{store_description}}}
 
             <div class="centered">
-              <img src="https://raw.githubusercontent.com/astrorunners/bigcartel-theme/master/source/images/astro/logo-5-white.png" width="320">
+              <img class="sobre-astro" src="https://raw.githubusercontent.com/astrorunners/bigcartel-theme/master/source/images/astro/logo-5-white.png" >
             </div>
           </article>
         {{/sobre_page}}
 
         {{#termos_de_uso_page}}
-          <article class="custom-page">
-            <h1 class="page-title">Contato</h1>
-            <p>Bla bla bla bla</p>
-              <!-- {{{store_terms}}} -->
+          <article class="custom-page termos-de-uso">
+              {{{store_terms}}}
+
+              <p>&nbsp;</p>
+              <div class="centered">
+                <img class="sobre-astro" src="https://raw.githubusercontent.com/astrorunners/bigcartel-theme/master/source/images/astro/logo-5-white.png" >
+              </div>
+              <p>&nbsp;</p>
           </article>
         {{/termos_de_uso_page}}
 
@@ -3627,9 +4241,11 @@ $.fn[plugin].fx = {};
         <section class="alternative">
 
           <div class="container">
+            <!--
               <div class="video">
                 <iframe src="https://player.vimeo.com/video/172813574?title=0&byline=0&portrait=0&color=222222" width="100%" height="100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
               </div>
+            -->
               <div class="glitch">
                 <img src="https://raw.githubusercontent.com/astrorunners/bigcartel-theme/master/source/images/astro/glitch.png">
               </div>
@@ -3802,46 +4418,6 @@ $.fn[plugin].fx = {};
             {{/with}}
           </div>
 
-          <div class="mobile-cart">
-            {{#with cart}}
-            {{#cart_form_tag}}
-
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th class="title">Produto</th>
-                    <th class="quantity">Quantidade</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {{#each line_items}}
-                  <tr>
-                    <td class="title">
-                      {{#remove_line_item_link}}×{{/remove_line_item_link}}
-                      {{#link_to_product}}{{title}}{{/link_to_product}}
-                      <span>{{ unit_price }}</span>
-                    </td>
-                    <td class="quantity">
-                      {{{quantity_input_field}}}
-                    </td>
-                  </tr>
-                  {{/each}}
-                </tbody>
-              </table>
-
-              <div id="cart-total-price">
-                <strong>Total:</strong> {{ total_price }}
-              </div>
-
-              <div class="submit">
-                <div class="submit-button">{{#submit_cart_form_tag }}{{/submit_cart_form_tag}}</div>
-              </div>
-
-            {{/cart_form_tag}}
-            {{/with}}
-          </div>
-
         </section>
         {{/cart_page}}
 
@@ -3864,6 +4440,11 @@ $.fn[plugin].fx = {};
           {{/each}}
         </ul>
       </nav>
+
+        <div class="lunar">
+          <img src="https://raw.githubusercontent.com/astrorunners/bigcartel-theme/master/source/images/astro/logo_principal.png">
+        </div>
+
         <ul class="social_footer">
           {{#if theme.facebook}}
             <li><a href="{{theme.facebook}}">
@@ -3910,22 +4491,81 @@ $.fn[plugin].fx = {};
               <i class="fa fa-youtube"></i>
             </a></li>
           {{/if}}
+          {{#if theme.soundcloud}}
+          <li><a href="{{theme.soundcloud}}">
+            <i class="fa fa-soundcloud"></i>
+          </a></li>
+          {{/if}}
         </ul>
 
-        <div class="lunar">
-            <img src="https://raw.githubusercontent.com/astrorunners/bigcartel-theme/master/source/images/astro/logo_principal.png">
-          </div>
     </footer>
   </div>
 
 
+  <!-- Google Analytics -->
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-76418878-1', 'auto');
+  ga('send', 'pageview');
+  </script>
+  <!-- End Google Analytics -->
 
   <script>
+  /*
+  if( $('.astro-headline').length ){
+    var waypoint = new Waypoint({
+      element: $('.astro-headline'),
+      handler: function(direction){
+        var screenWidth = Waypoint.viewportWidth()
+        if( $('.slideshow').length && screenWidth > 800){
+          if(direction === 'down'){
+            $('header').addClass('overlay');
+          }
+          else {
+            $('header').removeClass('overlay');
+          }
+        }
+      },
+      offset: 100
+    });
+  } else {
+    if ($('.content').length) {
+      var waypoint = new Waypoint({
+        element: $('.content'),
+        handler: function(direction) {
+          var screenWidth = Waypoint.viewportWidth();
+          if ($('.slideshow').length && screenWidth > 800) {
+            if (direction === 'down') {
+              $('header').addClass('overlay');
+            }
+            else {
+              $('header').removeClass('overlay');
+            }
+          }
+        },
+        offset: 88
+      });
+    }
+  }
+  */
+
     $('.slideshow').superslides({
       hashchange: false,
       pagination:false,
       play: 6000
     });
+
+    $('.products_lists').imagesLoaded()
+                        .progress(function(instance, image){
+      console.log('loaded image', image.img.src);
+      var result = image.isLoaded ? 'loaded' : 'broken';
+      image.img.className += ' loaded';
+    });
+    console.log({{id_do_google_analytics}});
   </script>
 
 </body>
